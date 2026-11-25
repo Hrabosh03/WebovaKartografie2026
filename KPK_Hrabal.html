@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Kříž pražských kostelů</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 600px;
+			width: 800px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+
+</head>
+<body>
+
+<h1>Kříž pražských kostelů</h1>
+<p>Pět kostelů z doby Karla IV. na Novém Městě pražském.</p>
+
+<div id='map'></div>
+
+<p><b>Legenda:</b> modrá značka = kostel, <span style="color: #7a1f3d"><b>━━</b></span> ramena kříže</p>
+
+<footer>
+	<strong>Zdroje:</strong>
+	podklady: viz roh mapy ·
+	souřadnice: <a href="https://www.wikipedia.com/wiki/Emmaus_Abbey">Wikipedia</a>,
+	<a href="https://www.wikidata.org/wiki/Q12030613">Wikidata</a>,
+	<a href="https://tripomatic.com/en/poi/church-of-the-assumption-of-the-virgin-mary-and-st-charles-the-great-prague-poi:339854">Tripomatic</a>,
+	<a href="https://www.waymarking.com/waymarks/WM8DG1_Kostel_Zvestovn_Panny_Marie_Church_of_the_Annunciation_of_the_Virgin_Mary_Na_Slupi_Prague">Waymarking</a> ·
+	texty: <a href="https://prague.eu/cs/nebesky-jeruzalem-karla-iv/">Prague City Tourism</a>,
+	<a href="https://katechete.apha.cz/file/9a164ad5951babe756828500425da139/4278/06-1-2%20K%C5%99%C3%AD%C5%BE%20kostel%C5%AF-historie.pdf">Arcibiskupství pražské</a>,
+	Waymarking ·
+	fotografie: <a href="https://cs.wikipedia.org/">Wikipedie</a> (autoři a licence v oknech)
+</footer>
+
+<script>
+const kostely = L.layerGroup();
+
+const emauzy = L.marker([50.07222, 14.41750]).bindPopup(
+	'<h3>Kostel Panny Marie, svatého Jeronýma, Cyrila a Metoděje, Vojtěcha a Prokopa</h3>' +
+	'<img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Emauzy_katedr%C3%A1la_PM.jpg/330px-Emauzy_katedr%C3%A1la_PM.jpg" alt="fotografie kostela" height="150">' +
+	'<p><small>Autor fotografie: <a href="https://commons.wikimedia.org/wiki/File:Emauzy_katedr%C3%A1la_PM.jpg">VitVit</a>, CC BY-SA 4.0</small></p>' +
+	'<p><b>Založení:</b> 1347</p>' +
+	'<p>Součást benediktinského kláštera Na Slovanech, střediska vzdělanosti a slovanského písemnictví.</p>' +
+	'<p>Věže shořely při náletu v roce 1945. Dnešní bílé věže se zlacenými hroty pocházejí z 60. let 20. století.</p>' +
+	'<a href="https://prague.eu/cs/objevujte/klaster-na-slovanech-emauzy/">Více informací</a>'
+).addTo(kostely);
+
+const karlov = L.marker([50.06870, 14.42846]).bindPopup(
+	'<h3>Kostel Nanebevzetí Panny Marie a sv. Karla Velikého</h3>' +
+	'<img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Karlov_kostel_Panny_Marie_a_sv._Karla_1.jpg/330px-Karlov_kostel_Panny_Marie_a_sv._Karla_1.jpg" alt="fotografie kostela" height="150">' +
+	'<p><small>Autor fotografie: <a href="https://commons.wikimedia.org/wiki/File:Karlov_kostel_Panny_Marie_a_sv._Karla_1.jpg">VitVit</a>, CC BY-SA 4.0</small></p>' +
+	'<p><b>Založení:</b> 1350</p>' +
+	'<p>Klášterní kostel augustiniánů kanovníků, vzorem mu byl pohřební chrám Karla Velikého v Cáchách.</p>' +
+	'<p>Obdivovaným stavitelským dílem je jeho hvězdicová klenba.</p>' +
+	'<a href="https://prague.eu/cs/objevujte/kostel-nanebevzeti-panny-marie-a-sv-karla-velikeho-na-karlove/">Více informací</a>'
+).addTo(kostely);
+
+const slup = L.marker([50.06750, 14.42142]).bindPopup(
+	'<h3>Kostel Zvěstování Panny Marie Na Slupi</h3>' +
+	'<img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Na_slupi_kostel_Panny_Marie_1.jpg/330px-Na_slupi_kostel_Panny_Marie_1.jpg" alt="fotografie kostela" height="150">' +
+	'<p><small>Autor fotografie: <a href="https://commons.wikimedia.org/wiki/File:Na_slupi_kostel_Panny_Marie_1.jpg">VitVit</a>, CC BY-SA 4.0</small></p>' +
+	'<p><b>Založení:</b> 1360</p>' +
+	'<p>Gotický kostel se štíhlou siluetou, při němž vznikl malý klášter řádu servitů.</p>' +
+	'<p>Označení „Na trávníčku“ připomíná kdysi zelené okolí u potoka Botiče.</p>' +
+	'<a href="https://katechete.apha.cz/file/9a164ad5951babe756828500425da139/4278/06-1-2%20K%C5%99%C3%AD%C5%BE%20kostel%C5%AF-historie.pdf">Více informací</a>'
+).addTo(kostely);
+
+const katerina = L.marker([50.07389, 14.42500]).bindPopup(
+	'<h3>Kostel sv. Kateřiny Alexandrijské</h3>' +
+	'<img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Kostel_sv._Kate%C5%99iny_pr%C5%AF%C4%8Del%C3%AD.jpg/330px-Kostel_sv._Kate%C5%99iny_pr%C5%AF%C4%8Del%C3%AD.jpg" alt="fotografie kostela" height="150">' +
+	'<p><small>Autor fotografie: <a href="https://commons.wikimedia.org/wiki/File:Kostel_sv._Kate%C5%99iny_pr%C5%AF%C4%8Del%C3%AD.jpg">Anton Fedorenko</a>, CC BY-SA 4.0</small></p>' +
+	'<p><b>Založení:</b> 1355</p>' +
+	'<p>Založen jako součást kláštera augustiniánek. Připomíná vítězství mladého Karla v bitvě u San Felice na svátek sv. Kateřiny.</p>' +
+	'<p>Z gotické stavby se dochovala hlavně věž, přezdívaná „pražský minaret“.</p>' +
+	'<a href="https://www.prague.eu/cs/objekt/mista/264/chram-sv-kateriny-alexandrijske">Více informací</a>'
+).addTo(kostely);
+
+const apolinar = L.marker([50.07092, 14.42362]).bindPopup(
+	'<h3>Kostel sv. Apolináře</h3>' +
+	'<img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Apolin%C3%A1%C5%99sk%C3%A1_kostel_sv._Apolin%C3%A1%C5%99e_1.jpg/330px-Apolin%C3%A1%C5%99sk%C3%A1_kostel_sv._Apolin%C3%A1%C5%99e_1.jpg" alt="fotografie kostela" height="150">' +
+	'<p><small>Autor fotografie: <a href="https://commons.wikimedia.org/wiki/File:Apolin%C3%A1%C5%99sk%C3%A1_kostel_sv._Apolin%C3%A1%C5%99e_1.jpg">VitVit</a>, CC BY-SA 4.0</small></p>' +
+	'<p><b>Založení:</b> po polovině 14. století</p>' +
+	'<p>Gotický kostel na návrší Větrov, který tvoří střed kříže.</p>' +
+	'<p>Jeho osmiboká věž je zdaleka viditelnou dominantou jižní části Nového Města.</p>' +
+	'<a href="https://prague.eu/cs/objevujte/kostel-sv-apolinare/">Více informací</a>'
+).addTo(kostely);
+
+const rameno1 = L.polyline([[50.07222, 14.41750], [50.07092, 14.42362], [50.06870, 14.42846]], { color: '#7a1f3d', weight: 5 });
+const rameno2 = L.polyline([[50.06750, 14.42142], [50.07092, 14.42362], [50.07389, 14.42500]], { color: '#7a1f3d', weight: 5 });
+const kriz = L.layerGroup([rameno1, rameno2]);
+
+const osmHOT = L.tileLayer('https://tile-a.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
+});
+
+const openTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+const map = L.map('map', {
+	center: [50.0707, 14.4240],
+	zoom: 16,
+	layers: [osmHOT, kriz, kostely]
+});
+
+const baseLayers = {
+	'OpenStreetMap.HOT': osmHOT,
+	'OpenTopoMap': openTopoMap
+};
+
+const overlays = {
+	'Kostely': kostely,
+	'Kříž': kriz
+};
+
+const layerControl = L.control.layers(baseLayers, overlays).addTo(map);
+</script>
+
+</body>
+</html>
